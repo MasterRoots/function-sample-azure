@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.spring.sample</groupId>
-	<artifactId>function-sample-azure</artifactId>
+	<artifactId>function-uppercase</artifactId>
 	<version>2.0.0.RELEASE</version>
 	<packaging>jar</packaging>
 
-	<name>function-sample-azure</name>
+	<name>function-uppercase</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -22,9 +22,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<functionAppName>function-sample-azure</functionAppName>
-		<functionAppRegion>westus</functionAppRegion>
-		<functionResourceGroup>java-function-group</functionResourceGroup>
+		<functionAppName>function-uppercase</functionAppName>
+		<functionAppRegion>eastus2</functionAppRegion>
+		<functionResourceGroup>rg-dataencrypt</functionResourceGroup>
 		<stagingDirectory>${project.build.directory}/azure-functions/${functionAppName}
 		</stagingDirectory>
 		<start-class>example.Config</start-class>
@@ -55,7 +55,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-function-dependencies</artifactId>
-				<version>2.2.0.BUILD-SNAPSHOT</version>
+				<version>2.0.1.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

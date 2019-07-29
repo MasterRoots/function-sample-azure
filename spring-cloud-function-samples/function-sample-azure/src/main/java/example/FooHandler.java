@@ -16,25 +16,40 @@
 
 package example;
 
-import com.microsoft.azure.functions.ExecutionContext;
-import com.microsoft.azure.functions.HttpMethod;
+import com.microsoft.azure.functions.*;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 
 import org.springframework.cloud.function.adapter.azure.AzureSpringBootRequestHandler;
 
+import java.util.Optional;
+
 /**
  * @author Soby Chacko
  */
-public class FooHandler extends AzureSpringBootRequestHandler<Foo, Bar> {
+public class FooHandler extends AzureSpringBootRequestHandler<String, String> {
 
 	@FunctionName("uppercase")
-	public Bar execute(
-		@HttpTrigger(name = "req", methods = {HttpMethod.GET,
-			HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS) Foo foo,
+	public HttpResponseMessage execute(
+		@HttpTrigger(name = "req", methods = {HttpMethod.GET}, authLevel = AuthorizationLevel.ANONYMOUS)HttpRequestMessage<Optional<String>> request,
 		ExecutionContext context) {
-		return handleRequest(foo, context);
+
+		// Parse query parameter
+		String query = request.getQueryParameters().get("name");
+		String name = request.getBody().orElse(query);
+
+		HttpResponseMessage responseMessage = null;
+
+		if (name == null) {
+			responseMessage = request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Adicione um parametro String para conversão ?name=[STRING]").build();
+		} else {
+			String uppercase = handleRequest(name, context);
+			responseMessage = request.createResponseBuilder(HttpStatus.OK).body("E ai?, " + uppercase).build();
+		}
+
+		return responseMessage;
+
 	}
 
 }
