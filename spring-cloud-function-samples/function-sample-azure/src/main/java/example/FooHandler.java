@@ -20,7 +20,6 @@ import com.microsoft.azure.functions.*;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
-
 import org.springframework.cloud.function.adapter.azure.AzureSpringBootRequestHandler;
 
 import java.util.Optional;
@@ -29,6 +28,8 @@ import java.util.Optional;
  * @author Soby Chacko
  */
 public class FooHandler extends AzureSpringBootRequestHandler<String, String> {
+
+	private static String myKey = System.getenv("testeKey");
 
 	@FunctionName("uppercase")
 	public HttpResponseMessage execute(
@@ -45,7 +46,7 @@ public class FooHandler extends AzureSpringBootRequestHandler<String, String> {
 			responseMessage = request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Adicione um parametro String para conversão ?name=[STRING]").build();
 		} else {
 			String uppercase = handleRequest(name, context);
-			responseMessage = request.createResponseBuilder(HttpStatus.OK).body("E ai?, " + uppercase).build();
+			responseMessage = request.createResponseBuilder(HttpStatus.OK).body("E ai?, " + myKey + " " + uppercase).build();
 		}
 
 		return responseMessage;
